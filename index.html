@@ -66,7 +66,6 @@
 <script>
   "use strict";
 
-
   const commentsList = document.querySelector(".comments");
   const nameInput = document.querySelector(".add-form-name");
   const commentInput = document.querySelector(".add-form-text");
@@ -75,8 +74,6 @@
   let userName = "";
   let commentText = "";
 
-
-  
   function updateForm() {
     userName = nameInput.value.trim();
     commentText = commentInput.value.trim();
@@ -86,7 +83,6 @@
 
   nameInput.addEventListener("input", updateForm);
   commentInput.addEventListener("input", updateForm);
-
   
   function escapeHtml(text) {
     return text
@@ -103,7 +99,6 @@
     if (userName === "" || commentText === "") {
       return;
     }
-
     const now = new Date();
 
     const day = String(now.getDate()).padStart(2, "0");
@@ -152,6 +147,7 @@
 
     nameInput.focus();
   });
+
 
   updateForm();
 </script>
