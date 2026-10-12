@@ -63,9 +63,92 @@
     </div>
   </body>
 
-  <script>
-    "use strict";
-    // Код писать здесь
-    console.log("It works!");
-  </script>
+<script>
+  "use strict";
+
+  const commentsList = document.querySelector(".comments");
+  const nameInput = document.querySelector(".add-form-name");
+  const commentInput = document.querySelector(".add-form-text");
+  const addButton = document.querySelector(".add-form-button");
+
+  let userName = "";
+  let commentText = "";
+
+  function updateForm() {
+    userName = nameInput.value.trim();
+    commentText = commentInput.value.trim();
+
+    addButton.disabled = userName === "" || commentText === "";
+  }
+
+  nameInput.addEventListener("input", updateForm);
+  commentInput.addEventListener("input", updateForm);
+  
+  function escapeHtml(text) {
+    return text
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  addButton.addEventListener("click", () => {
+    updateForm();
+
+    if (userName === "" || commentText === "") {
+      return;
+    }
+    const now = new Date();
+
+    const day = String(now.getDate()).padStart(2, "0");
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const year = String(now.getFullYear()).slice(-2);
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+
+    const dateTime = `${day}.${month}.${year} ${hours}:${minutes}`;
+
+    const safeName = escapeHtml(userName);
+    const safeComment = escapeHtml(commentText)
+      .replace(/\r?\n/g, "<br>");
+
+    const newComment = `
+      <li class="comment">
+        <div class="comment-header">
+          <div>${safeName}</div>
+          <div>${dateTime}</div>
+        </div>
+
+        <div class="comment-body">
+          <div class="comment-text">
+            ${safeComment}
+          </div>
+        </div>
+
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">0</span>
+            <button
+              class="like-button"
+              type="button"
+              aria-label="Поставить лайк"
+            ></button>
+          </div>
+        </div>
+      </li>
+    `;
+
+    commentsList.innerHTML += newComment;
+
+    nameInput.value = "";
+    commentInput.value = "";
+    updateForm();
+
+    nameInput.focus();
+  });
+
+
+  updateForm();
+</script>
 </html>
